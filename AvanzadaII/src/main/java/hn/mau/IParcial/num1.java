@@ -18,9 +18,10 @@ public class num1 extends javax.swing.JFrame {
      */
     public num1() {
         initComponents();
+
     }
-    
-     public void cerrar() {
+
+    public void cerrar() {
         Object[] opciones = {"Aceptar", "Cancelar"};
         int eleccion = JOptionPane.showOptionDialog(rootPane, "En realidad desea realizar cerrar la aplicacion", "Mensaje de Confirmacion",
                 JOptionPane.YES_NO_OPTION,
@@ -30,7 +31,49 @@ public class num1 extends javax.swing.JFrame {
 
         }
     }
-    
+
+    public boolean iniciarSesion(int intentos) {
+
+        String User = "Admin";
+        String Clave = "12345";
+        boolean respuesta = false;
+        boolean on = true;
+        while (on) {
+            String Pass = jPFPass.getText();
+            if (jTxtUser.getText().isEmpty() || jPFPass.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Por favor escriba su usuario y contraseña", "Iniciar sesión",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                if (intentos == maximos) {
+                    JOptionPane.showMessageDialog(this, "Usuario bloqueado intentos permitidos alcanzados");
+                    System.exit(0);
+
+                } else {
+                    if (jTxtUser.getText().equals(User) && Pass.equals(Clave)) {
+                        respuesta = true;
+                        JOptionPane.showMessageDialog(this, "Bienvenido");
+                        System.exit(0);
+
+                    } else {
+                        intentos++;
+                        Object[] opciones = {"Aceptar", "Cancelar"};
+                        int eleccion = JOptionPane.showOptionDialog(rootPane, "Usuario / Contraseña incorrecta, lleva " + intentos + " de " + maximos, "Warning",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE, null, opciones, "Cancelar");
+                        if (eleccion == JOptionPane.YES_OPTION) {
+                            System.exit(0);
+                            on = false;
+
+                        }
+                    }
+                }
+            }
+
+        }
+
+        return respuesta;
+    }
+
     public void aceptar() {
         Object[] opciones = {"Aceptar", "Cancelar"};
         int eleccion = JOptionPane.showOptionDialog(rootPane, "Presiono el boton de aceptar", "Mensaje de Confirmacion",
@@ -56,9 +99,9 @@ public class num1 extends javax.swing.JFrame {
         lblIcon = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jTxtUser = new javax.swing.JTextField();
+        jPFPass = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -92,8 +135,6 @@ public class num1 extends javax.swing.JFrame {
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Merary", "Maureen", "Flor" }));
-
         jLabel3.setFont(new java.awt.Font("Inter", 1, 13)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(253, 251, 251));
         jLabel3.setText("Clave:");
@@ -113,8 +154,8 @@ public class num1 extends javax.swing.JFrame {
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jTxtUser, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                            .addComponent(jPFPass)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(178, 178, 178)
                         .addComponent(jLabel5)
@@ -131,11 +172,11 @@ public class num1 extends javax.swing.JFrame {
                         .addGap(22, 22, 22)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(30, 30, 30)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTxtUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(36, 36, 36)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jPFPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(lblIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,9 +198,16 @@ public class num1 extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    int intentos = 0;
+    final int maximos = 3;
+    boolean logueado = false;
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        aceptar();
+        while (!(intentos == maximos) && !logueado) {
+            logueado = iniciarSesion(intentos);
+            //limpia variables
+            jTxtUser.setText(null);
+            jPFPass.setText(null);
+        }
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
@@ -206,13 +254,13 @@ public class num1 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JPasswordField jPFPass;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTxtUser;
     private javax.swing.JLabel lblIcon;
     // End of variables declaration//GEN-END:variables
 }
