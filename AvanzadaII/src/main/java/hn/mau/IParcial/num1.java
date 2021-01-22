@@ -204,9 +204,7 @@ public class num1 extends javax.swing.JFrame {
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         while (!(intentos == maximos) && !logueado) {
             logueado = iniciarSesion(intentos);
-            //limpia variables
-            jTxtUser.setText(null);
-            jPFPass.setText(null);
+           
         }
     }//GEN-LAST:event_jLabel5MouseClicked
 
